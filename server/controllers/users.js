@@ -11,6 +11,8 @@ export const getUser = async (req, res) => {
   }
 };
 
+
+
 export const getUserFriends = async (req, res) => {
   try {
     const { id } = req.params;
@@ -59,5 +61,6 @@ export const addRemoveFriend = async (req, res) => {
     res.status(200).json(formattedFriends);
   } catch (err) {
     res.status(404).json({ message: err.message });
-  }
+  };
 };
+

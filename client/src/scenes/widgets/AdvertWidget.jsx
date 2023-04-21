@@ -9,9 +9,9 @@ const AdvertWidget = () => {
   const medium = palette.neutral.medium;
 
   return (
-    <WidgetWrapper>
+    <WidgetWrapper style={{position:"fixed", width:"25%"}}> 
       <FlexBetween>
-        <Typography color={dark} variant="h5" fontWeight="500">
+        <Typography color={dark} variant="h5" fontWeight="500" >
           Sponsored
         </Typography>
         <Typography color={medium}>Create Ad</Typography>

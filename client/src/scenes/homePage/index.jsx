@@ -1,3 +1,4 @@
+import React,{useState} from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
 import Navbar from "scenes/navbar";
@@ -6,14 +7,21 @@ import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
+import MessengerWidget from "scenes/widgets/MessengerWidget";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector((state) => state.user);
 
+  const[displayingMessage,setDisplayingMessage]=useState(true);
+
+const displayMessage=(state)=>{
+  setDisplayingMessage(state)
+};
+
   return (
     <Box>
-      <Navbar />
+      <Navbar DisplayMessage={displayMessage} />
       <Box
         width="100%"
         padding="2rem 6%"
@@ -21,7 +29,7 @@ const HomePage = () => {
         gap="0.5rem"
         justifyContent="space-between"
       >
-        <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
+        <Box flexBasis={isNonMobileScreens ? "26%" : undefined} >
           <UserWidget userId={_id} picturePath={picturePath} />
         </Box>
         <Box
@@ -32,10 +40,15 @@ const HomePage = () => {
           <PostsWidget userId={_id} />
         </Box>
         {isNonMobileScreens && (
-          <Box flexBasis="26%">
-            <AdvertWidget />
-            <Box m="2rem 0" />
-            <FriendListWidget userId={_id} />
+          <Box flexBasis="26%" >
+  <AdvertWidget />
+           {displayingMessage&& <Box m="2rem ">
+        <MessengerWidget userId={_id} picturePath={picturePath} closeMessage={displayMessage}>
+        </MessengerWidget>
+      </Box>
+          }
+          
+           
           </Box>
         )}
       </Box>

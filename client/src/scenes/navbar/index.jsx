@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {
   Box,
   IconButton,
@@ -19,17 +19,20 @@ import {
   Help,
   Menu,
   Close,
+  Settings
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import WidgetWrapper from "components/WidgetWrapper";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+  
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();
@@ -40,9 +43,11 @@ const Navbar = () => {
   const alt = theme.palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
+const[displaySearchProfile,setDisplaySearchProfile]=useState("");
 
   return (
-    <FlexBetween padding="1rem 6%" backgroundColor={alt}>
+    
+    <FlexBetween padding="1rem 6%" backgroundColor={alt} >
       <FlexBetween gap="1.75rem">
         <Typography
           fontWeight="bold"
@@ -65,10 +70,12 @@ const Navbar = () => {
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." />
-            <IconButton>
+            {/*Be able to search up other users in the app*/}
+            <InputBase placeholder="Search..." onChange={(e)=>{setDisplaySearchProfile(e.target.value)}} value={displaySearchProfile}/>
+            <IconButton >
               <Search />
             </IconButton>
+
           </FlexBetween>
         )}
       </FlexBetween>
@@ -82,10 +89,19 @@ const Navbar = () => {
             ) : (
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
-          </IconButton>
+          </IconButton >
+
+          <IconButton > {/*onClick={()=>{props.DisplayMessage(true)}}*/}
           <Message sx={{ fontSize: "25px" }} />
+          </IconButton>
+
           <Notifications sx={{ fontSize: "25px" }} />
+          <IconButton onClick={() => navigate(`/faq`)}>
           <Help sx={{ fontSize: "25px" }} />
+          </IconButton>
+          <IconButton onClick={()=> navigate(`/editing`)}  >
+              <Settings />
+            </IconButton>
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -191,6 +207,7 @@ const Navbar = () => {
         </Box>
       )}
     </FlexBetween>
+   
   );
 };
 

@@ -27,6 +27,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     );
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
+  
   };
 
   useEffect(() => {
@@ -37,9 +38,11 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+const Relavent=posts.toReversed();
+ 
   return (
     <>
-      {posts.map(
+      {Relavent.map(
         ({
           _id,
           userId,
@@ -51,7 +54,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
           userPicturePath,
           likes,
           comments,
-        }) => (
+        }) =>(
           <PostWidget
             key={_id}
             postId={_id}

@@ -13,7 +13,7 @@ export const createPost = async (req, res) => {
       location: user.location,
       description,
       userPicturePath: user.picturePath,
-      picturePath,
+      picturePath:user.picturePath,
       likes: {},
       comments: [],
     });
@@ -25,6 +25,18 @@ export const createPost = async (req, res) => {
     res.status(409).json({ message: err.message });
   }
 };
+
+/*DELETE POST*/
+export const deletePost=async(req,res)=>{
+  try{
+    const {postId,userId}=req.params;
+    const deletePosting=await Post.findByIdAndDelete(postId);
+  await deletePosting.save();
+
+  const post= await Post.find({userId});
+     res.status(200).json(post);
+  }catch(err){res.status(409).json({ message: err.message });}
+}
 
 /* READ */
 export const getFeedPosts = async (req, res) => {

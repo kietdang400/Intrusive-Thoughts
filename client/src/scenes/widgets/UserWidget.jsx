@@ -3,8 +3,9 @@ import {
   EditOutlined,
   LocationOnOutlined,
   WorkOutlineOutlined,
+  Settings,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import { Box, Typography, Divider, useTheme, IconButton, useMediaQuery } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -14,13 +15,17 @@ import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
+  const[stylePosition,setStylePosition]=useState("none");
+const[styleWidth,setStyleWidth]=useState("100%");
+const[styleDisplay, setDisplay]=useState("block")
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
+  const users = useSelector((state) => state.user);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
-
+ const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/users/${userId}`, {
       method: "GET",
@@ -32,6 +37,16 @@ const UserWidget = ({ userId, picturePath }) => {
 
   useEffect(() => {
     getUser();
+
+if(isNonMobileScreens){
+setStylePosition("fixed");
+setStyleWidth("23%");
+setDisplay(null);
+}else{
+  setStylePosition("none");
+  setStyleWidth("100%");
+  setDisplay("block")
+};
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!user) {
@@ -48,19 +63,24 @@ const UserWidget = ({ userId, picturePath }) => {
     friends,
   } = user;
 
+
+
+
+
   return (
-    <WidgetWrapper>
+    
+    <WidgetWrapper style={isNonMobileScreens?{position:"fixed",width:"23%"}:{display:"block",width:"100%"}}>
       {/* FIRST ROW */}
       <FlexBetween
-        gap="0.5rem"
+        gap="1.5rem"
         pb="1.1rem"
         onClick={() => navigate(`/profile/${userId}`)}
       >
-        <FlexBetween gap="1rem">
+        <FlexBetween gap="1rem" >
           <UserImage image={picturePath} />
           <Box>
             <Typography
-              variant="h4"
+              variant="h5"
               color={dark}
               fontWeight="500"
               sx={{
@@ -75,10 +95,11 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{friends.length} friends</Typography>
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined />
+        {/*Edit profile form*/}
+        <ManageAccountsOutlined /> 
       </FlexBetween>
 
-      <Divider />
+      <Divider mt="1rem"/>
 
       {/* SECOND ROW */}
       <Box p="1rem 0">
@@ -145,6 +166,7 @@ const UserWidget = ({ userId, picturePath }) => {
         </FlexBetween>
       </Box>
     </WidgetWrapper>
+        
   );
 };
 
