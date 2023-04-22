@@ -53,7 +53,7 @@ const[translateMessage,setTranslateMessage]=useState(true)
        gap="0.5rem"
         pb="1.1rem"
       >
-        <FlexBetween gap="1rem" >
+        <FlexBetween gap="1rem" alignItems={"center"}>
             <UserImage image={friend.picturePath} size="55px"></UserImage>
 <Box>
      <Typography
@@ -64,11 +64,11 @@ const[translateMessage,setTranslateMessage]=useState(true)
             {friend.firstName} {friend.lastName}
           </Typography>
     <Typography color={medium} fontSize="0.75rem">{friend.occupation}</Typography>
+   <Divider gap="1rem"/>
 </Box>
         </FlexBetween>
       </FlexBetween>
       </Button>
-      
         ))}
       </Box>
   </Box>
